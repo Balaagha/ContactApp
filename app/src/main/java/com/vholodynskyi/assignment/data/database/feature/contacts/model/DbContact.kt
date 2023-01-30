@@ -12,5 +12,6 @@ data class DbContact(
     @ColumnInfo val firstName: String?,
     @ColumnInfo val lastName: String?,
     @ColumnInfo val email: String?,
-    @ColumnInfo val photo: String?
+    @ColumnInfo val photo: String?,
+    @ColumnInfo val isDeleted: Boolean? = false
 ) : Serializable

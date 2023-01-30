@@ -1,13 +1,15 @@
 package com.vholodynskyi.assignment.data.database.feature.contacts.source
 
-import androidx.lifecycle.LiveData
 import com.vholodynskyi.assignment.data.database.feature.contacts.model.DbContact
+import kotlinx.coroutines.flow.Flow
 
 interface ContactLocalDataSource {
 
-    fun getAllContacts(): LiveData<List<DbContact>>
+    fun getAllContacts(): Flow<List<DbContact>>
 
-    fun getContact(noteId: Long): DbContact
+    fun getAllContactsByFirstName(name: String): List<DbContact>
+
+    fun getContact(contactId: Long): DbContact
 
     suspend fun insertAll(vararg dbContacts: DbContact): List<Long>
 
@@ -18,5 +20,7 @@ interface ContactLocalDataSource {
     suspend fun updateContact(dbContact: DbContact)
 
     suspend fun deleteContact(dbContact: DbContact)
+
+    suspend fun clearDBWithFlagLogic()
 
 }

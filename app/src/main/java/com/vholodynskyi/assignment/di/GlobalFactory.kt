@@ -13,7 +13,8 @@ import com.vholodynskyi.assignment.data.database.feature.contacts.source.Contact
 import com.vholodynskyi.assignment.data.database.utils.DatabaseConstant.DATABASE_NAME
 import com.vholodynskyi.assignment.data.feature.userContacts.repository.ContactOperationRepository
 import com.vholodynskyi.assignment.data.feature.userContacts.repository.ContactOperationRepositoryImpl
-import com.vholodynskyi.assignment.data.feature.userContacts.usecase.FetchUserContactsDataUseCase
+import com.vholodynskyi.assignment.data.feature.userContacts.usecase.FetchUserContactsDataAndSaveDBUseCase
+import com.vholodynskyi.assignment.data.feature.userContacts.usecase.GetUserFromDBUseCase
 import com.vholodynskyi.assignment.ui.contactslist.ContactsListViewModel
 import com.vholodynskyi.assignment.ui.details.DetailsViewModel
 
@@ -43,7 +44,13 @@ object GlobalFactory: ViewModelProvider.Factory {
     }
 
     private val fetchUserContactsDataUseCase by lazy {
-        FetchUserContactsDataUseCase(
+        FetchUserContactsDataAndSaveDBUseCase(
+            repository = contactOperationRepository
+        )
+    }
+
+    private val getUserFromDBUseCase by lazy {
+        GetUserFromDBUseCase(
             repository = contactOperationRepository
         )
     }
@@ -58,7 +65,7 @@ object GlobalFactory: ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when (modelClass) {
-            ContactsListViewModel::class.java -> ContactsListViewModel(fetchUserContactsDataUseCase)
+            ContactsListViewModel::class.java -> ContactsListViewModel(fetchUserContactsDataUseCase,getUserFromDBUseCase)
             DetailsViewModel::class.java -> DetailsViewModel()
             else -> throw IllegalArgumentException("Cannot create factory for ${modelClass.simpleName}")
         } as T
