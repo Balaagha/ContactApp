@@ -1,13 +1,13 @@
 package com.vholodynskyi.assignment.ui.contactslist
 
-import android.app.Activity
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vholodynskyi.assignment.databinding.ItemContactListBinding
 
 class ContactAdapter (
-    private val context: Activity,
+    private val context: Context,
     private val onItemClicked: ItemClick
 ) : RecyclerView.Adapter<ViewHolder>() {
 

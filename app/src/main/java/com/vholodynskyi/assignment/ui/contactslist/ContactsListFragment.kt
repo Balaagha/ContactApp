@@ -1,19 +1,19 @@
 package com.vholodynskyi.assignment.ui.contactslist
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vholodynskyi.assignment.databinding.FragmentContactsListBinding
+import com.vholodynskyi.assignment.di.GlobalFactory
+import com.vholodynskyi.assignment.framework.BaseMvvmFragment
 
-open class ContactsListFragment : Fragment() {
+open class ContactsListFragment: BaseMvvmFragment<FragmentContactsListBinding, ContactsListViewModel>(
+    FragmentContactsListBinding::inflate,
+) {
 
     private val contactAdapter: ContactAdapter by lazy {
         ContactAdapter(
-            requireActivity(),
+            requireContext(),
             this::onContactClicked
         )
     }
@@ -23,27 +23,14 @@ open class ContactsListFragment : Fragment() {
             .navigate(ContactsListFragmentDirections.actionContactListToDetails(id))
     }
 
-    private var binding: FragmentContactsListBinding? = null
+    override val viewModel: ContactsListViewModel by viewModels { GlobalFactory  }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Creates a vertical Layout Manager
-        return FragmentContactsListBinding.inflate(layoutInflater, container, false)
-            .apply {
-                contactList.layoutManager = LinearLayoutManager(context)
-                contactList.adapter = contactAdapter
-            }
-            .also {
-                binding = it
-            }
-            .root
+    override fun setup() {
+        binding.apply {
+            contactList.layoutManager = LinearLayoutManager(context)
+            contactList.adapter = contactAdapter
+        }
+        viewModel.fetchUserData()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
-    }
 }

@@ -1,0 +1,13 @@
+package com.vholodynskyi.assignment.data.base.models
+
+enum class FailureType {
+  API_GENERIC_ERROR,
+  AUTH_TOKEN_EXPIRED,
+  EMPTY_OR_NULL_RESULT,
+  API_REDIRECTION_CODE_RESPONSE,
+  RESPONSE_TIMEOUT,
+  NO_INTERNET_CONNECTION,
+  HTTP_EXCEPTION,
+  IO_EXCEPTION,
+  OTHER
+}
