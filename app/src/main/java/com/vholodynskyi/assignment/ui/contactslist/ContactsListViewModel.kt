@@ -21,9 +21,9 @@ class ContactsListViewModel(
     private var _isLoading: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    fun fetchUserData() {
+    fun fetchUserData(isRefresh: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchUserContactsDataUseCase.invoke().collectLatest {
+            fetchUserContactsDataUseCase.invoke(isRefresh).collectLatest {
                 _isLoading.postValue(it is DataWrapper.Loading)
             }
         }

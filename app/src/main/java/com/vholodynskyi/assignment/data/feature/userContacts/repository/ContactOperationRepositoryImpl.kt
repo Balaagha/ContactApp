@@ -19,7 +19,7 @@ class ContactOperationRepositoryImpl(
     override fun getAllContactsByFirstNameData(name: String): List<DbContact> =
         dataSource.getAllContactsByFirstName(name)
 
-    override fun getSelectedContactData(noteId: Long): DbContact = dataSource.getContact(noteId)
+    override fun getSelectedContactData(contactId: Long): DbContact = dataSource.getContact(contactId)
 
     override suspend fun insertContact(dbContact: DbContact) = dataSource.insertContact(dbContact)
 
@@ -28,6 +28,8 @@ class ContactOperationRepositoryImpl(
     override suspend fun updateContact(dbContact: DbContact) = dataSource.updateContact(dbContact)
 
     override suspend fun deleteContact(dbContact: DbContact) = dataSource.deleteContact(dbContact)
+
+    override suspend fun deleteContact(id: Int) = dataSource.deleteContact(id)
 
     override suspend fun getContactsFromAPI(): DataWrapper<Response<ApiContactResponse>> =
         safeApiCall {

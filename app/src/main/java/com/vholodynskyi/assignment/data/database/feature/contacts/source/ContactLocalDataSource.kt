@@ -21,6 +21,8 @@ interface ContactLocalDataSource {
 
     suspend fun deleteContact(dbContact: DbContact)
 
+    suspend fun deleteContact(id: Int)
+
     suspend fun clearDBWithFlagLogic()
 
 }

@@ -1,34 +1,47 @@
 package com.vholodynskyi.assignment.ui.details
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.util.Log
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.vholodynskyi.assignment.databinding.FragmentDetailsBinding
 import com.vholodynskyi.assignment.di.GlobalFactory
+import com.vholodynskyi.assignment.framework.BaseMvvmFragment
+import com.vholodynskyi.assignment.utils.extentions.observe
 
 
-open class DetailsFragment : Fragment() {
-    var binding: FragmentDetailsBinding? = null
+class DetailsFragment: BaseMvvmFragment<FragmentDetailsBinding, DetailsViewModel>(
+    FragmentDetailsBinding::inflate,
+) {
 
-    private val detailsViewModel by viewModels<DetailsViewModel> { GlobalFactory }
+    private val args: DetailsFragmentArgs by navArgs()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return FragmentDetailsBinding.inflate(layoutInflater, container, false)
-            .also {
-                binding = it
+    private val contactId by lazy {
+        args.id
+    }
+
+    override val viewModel: DetailsViewModel by viewModels<DetailsViewModel> { GlobalFactory }
+
+    override fun setup() {
+        viewModel.getContactDataById(contactId).also{
+            Log.d("myTag","it => $it")
+        }
+        binding.btnDelete.setOnClickListener {
+            viewModel.deleteContact(contactId)
+        }
+        observe(viewModel.userContactData) { data ->
+            binding.apply {
+                tvFirstName.text = data?.firstName
+                tvLastName.text = data?.lastName
+                tvEmail.text = data?.email
             }
-            .root
+        }
+        observe(viewModel.isDeleted) { value ->
+            if(value == true) {
+                findNavController().navigateUp()
+            }
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        binding = null
-    }
+
 }

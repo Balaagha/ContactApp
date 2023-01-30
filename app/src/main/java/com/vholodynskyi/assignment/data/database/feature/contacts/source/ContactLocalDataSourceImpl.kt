@@ -35,6 +35,10 @@ class ContactLocalDataSourceImpl(
         dao.delete(dbContact)
     }
 
+    override suspend fun deleteContact(id: Int) {
+        dao.deleteById(id)
+    }
+
     override suspend fun clearDBWithFlagLogic() = dao.clearDBWithFlagLogic()
 
 }

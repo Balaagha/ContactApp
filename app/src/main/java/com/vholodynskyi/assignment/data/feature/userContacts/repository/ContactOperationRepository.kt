@@ -12,7 +12,7 @@ interface ContactOperationRepository {
 
     fun getAllContactsByFirstNameData(name: String): List<DbContact>
 
-    fun getSelectedContactData(noteId: Long): DbContact
+    fun getSelectedContactData(contactId: Long): DbContact
 
     suspend fun insertContact(dbContact: DbContact)
 
@@ -21,6 +21,8 @@ interface ContactOperationRepository {
     suspend fun updateContact(dbContact: DbContact)
 
     suspend fun deleteContact(dbContact: DbContact)
+
+    suspend fun deleteContact(id: Int)
 
     suspend fun clearDBWithFlagLogic()
 

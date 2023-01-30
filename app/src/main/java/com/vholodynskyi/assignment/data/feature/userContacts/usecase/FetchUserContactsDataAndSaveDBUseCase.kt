@@ -78,6 +78,14 @@ class FetchUserContactsDataAndSaveDBUseCase(
                     )
                 )
             }
+        } else {
+            emit(
+                DataWrapper.Failure<ApiContactResponse>(
+                    FailureType.OTHER,
+                    FailureBehavior.SILENT,
+                    message = "data is Loading"
+                )
+            )
         }
 
     }
