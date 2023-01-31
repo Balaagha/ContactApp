@@ -24,9 +24,7 @@ object GlobalFactory: ViewModelProvider.Factory {
 
     private lateinit var db: AppDatabase
 
-    private val service: ContactsService by lazy {
-        RetrofitServicesProvider().contactsService
-    }
+    private val service by ContactsServiceDelegate()
 
     private val contactDao: ContactsDao by lazy {
         db.userDao()
