@@ -79,7 +79,11 @@ object GlobalFactory: ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when (modelClass) {
-            ContactsListViewModel::class.java -> ContactsListViewModel(fetchUserContactsDataUseCase,getUserFromDBUseCase)
+            ContactsListViewModel::class.java -> ContactsListViewModel(
+                fetchUserContactsDataUseCase,
+                getUserFromDBUseCase,
+                deleteContactFromDBUseCase
+            )
             DetailsViewModel::class.java -> DetailsViewModel(
                 getUserContactByIdFromDBUseCase,
                 deleteContactFromDBUseCase

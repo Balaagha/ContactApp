@@ -3,6 +3,7 @@ package com.vholodynskyi.assignment.framework
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.viewbinding.ViewBinding
 import com.vholodynskyi.assignment.utils.extentions.observe
 
@@ -40,7 +41,7 @@ abstract class BaseMvvmFragment<VB : ViewBinding, VM : BaseViewModel>(
     }
 
     protected open fun showToastViaBaseUiEvent(uiActionEvent: GenericUiEvent.Toast) {
-        // No Implement yet
+        Toast.makeText(requireContext(), uiActionEvent.title ?: EMPTY, Toast.LENGTH_SHORT).show()
     }
 
     protected open fun showSnackBarViaBaseUiEvent(uiActionEvent: GenericUiEvent.SnackBar) {

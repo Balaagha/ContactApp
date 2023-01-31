@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.vholodynskyi.assignment.data.base.models.DataWrapper
+import com.vholodynskyi.assignment.data.feature.userContacts.usecase.DeleteContactFromDBUseCase
 import com.vholodynskyi.assignment.data.feature.userContacts.usecase.FetchUserContactsDataAndSaveDBUseCase
 import com.vholodynskyi.assignment.data.feature.userContacts.usecase.GetUserFromDBUseCase
 import com.vholodynskyi.assignment.framework.BaseViewModel
@@ -15,7 +16,8 @@ import kotlinx.coroutines.launch
 
 class ContactsListViewModel(
     private val fetchUserContactsDataUseCase: FetchUserContactsDataAndSaveDBUseCase,
-    private val getUserFromDBUseCase: GetUserFromDBUseCase
+    private val getUserFromDBUseCase: GetUserFromDBUseCase,
+    private val deleteContactFromDBUseCase: DeleteContactFromDBUseCase
 ) : BaseViewModel() {
 
     private var _isLoading: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
@@ -26,6 +28,12 @@ class ContactsListViewModel(
             fetchUserContactsDataUseCase.invoke(isRefresh).collectLatest {
                 _isLoading.postValue(it is DataWrapper.Loading)
             }
+        }
+    }
+
+    fun deleteContact(contactId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteContactFromDBUseCase.invoke(contactId)
         }
     }
 

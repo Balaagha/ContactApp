@@ -3,6 +3,8 @@ package com.vholodynskyi.assignment.ui.contactslist
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.vholodynskyi.assignment.data.database.feature.contacts.model.DbContact
 import com.vholodynskyi.assignment.databinding.ItemContactListBinding
@@ -12,11 +14,25 @@ class ContactAdapter (
     private val onItemClicked: ItemClick
 ) : RecyclerView.Adapter<ViewHolder>() {
 
-    var items: List<DbContact> = listOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
+    private val callback = object : DiffUtil.ItemCallback<DbContact>() {
+        override fun areItemsTheSame(
+            oldItem: DbContact,
+            newItem: DbContact
+        ): Boolean {
+            return oldItem.id == newItem.id
         }
+
+        override fun areContentsTheSame(
+            oldItem: DbContact,
+            newItem: DbContact
+        ): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+
+
+    val differ = AsyncListDiffer(this, callback)
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
         return ViewHolder(
@@ -25,9 +41,9 @@ class ContactAdapter (
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items[position]
+        val item = differ.currentList[position]
         with(holder.binding) {
-            text.text = items[position].firstName
+            text.text = item.firstName
             root.setOnClickListener {
                 onItemClicked(item)
             }
@@ -39,7 +55,7 @@ class ContactAdapter (
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return differ.currentList.size
     }
 }
 
